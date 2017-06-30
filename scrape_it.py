@@ -20,6 +20,10 @@ def start_table(name):
     in_a_table = False
     table_title = name
 
+frames = []
+#
+# scrape the tables
+#
 for i in range(len(lines)):
 # for i in range(20):
     
@@ -47,7 +51,17 @@ for i in range(len(lines)):
 
         open("TMP.csv","w").write(csv_str);
 
-        pd.read_csv("TMP.csv",skiprows=1).to_csv("output/" + table_title + ".csv",
+        frame = pd.read_csv("TMP.csv",skiprows=1)
+        frame.to_csv("output/" + table_title + ".csv",
                                                  index=False)
 
-    
+        frame["agency"] = table_title
+        frames.append(frame)
+
+#
+# output a mega frame
+#
+
+pd.concat(frames).to_csv("output/mega.csv",index=False)
+
+        
